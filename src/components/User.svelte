@@ -7,8 +7,8 @@
         nameVal = value;
     });
 
-    //Set a new name
     let newName = '';
+
     function setName() {
         newName = newName.toLowerCase();
         name.set(newName);
@@ -18,9 +18,6 @@
         newName = '';
         setName();
     }
-
-    //Log current name
-    $: console.log(nameVal);
 </script>
 
 {#if nameVal != ''}
@@ -76,9 +73,11 @@
         position: absolute;
         top: 0;
         left: 0;
-        margin-top: 35px;
-        margin-left: 40px;
+        margin-top: 40px;
+        margin-left: 45px;
         z-index: 99;
+
+        max-width: 40vw;
 
         font-weight: bold;
         font-size: 1.5rem;

@@ -2,11 +2,22 @@ body,
 html {
 	background-color: #ffffff;
 
-	font-family: 'Poiret One', cursive;
+	font-family: 'Poiret One', serif;
 	font-style: normal;
 	font-variant: normal;
 	-webkit-font-smoothing: subpixel-antialiased;
 	text-rendering: optimizeLegibility;
+}
+
+html {
+	height: 100%;
+	box-sizing: border-box;
+	border: 30px solid;
+	border-image-source: url(/src/assets/border.png);
+	border-image-slice: 181 335 204 212;
+	border-image-width: 182px 336px 201px 209px;
+	border-image-outset: 0px 0px 0px 0px;
+	border-image-repeat: stretch repeat;
 }
 
 body {

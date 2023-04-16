@@ -2,23 +2,28 @@
     import { db } from '../firebase.js';
     import { collection, doc, updateDoc, getDoc, arrayUnion, onSnapshot } from 'firebase/firestore';
     import { toast } from '@zerodevx/svelte-toast';
+    import Leaderboard from './Leaderboard.svelte';
 
     export let name;
 
     let dbName = 'challenges';
 
     let randomChallenge = { id: '', name: 'Loading...', completed: [] };
-    let stringList = [];
+    let challengeList = [];
+
+    let recentlySelected = []; // Array to keep track of recently selected challenges
+    let recentThreshold = 6; // Number of previous selections to consider as "recent"
 
     const collRef = collection(db, dbName);
     const unsub = onSnapshot(collRef, (coll) => {
-        stringList = [];
+        challengeList = [];
         coll.forEach((doc) => {
-            stringList.push({ id: doc.id, name: doc.data().name, completed: doc.data().completed });
-            if (!randomChallenge || randomChallenge.name == 'Loading...') {
-                selectRandomString();
-            }
-            if (randomChallenge.id == doc.id) {
+            challengeList.push({
+                id: doc.id,
+                name: doc.data().name,
+                completed: doc.data().completed,
+            });
+            if (randomChallenge && randomChallenge.id && randomChallenge.id == doc.id) {
                 randomChallenge = {
                     id: doc.id,
                     name: doc.data().name,
@@ -26,12 +31,25 @@
                 };
             }
         });
+        if (!randomChallenge || randomChallenge.name == 'Loading...') {
+            selectRandomString();
+        }
+        if (recentThreshold >= challengeList.length) {
+            recentThreshold = challengeList.length - 1;
+        }
     });
 
     function selectRandomString() {
         let oldChallenge = randomChallenge;
-        while (randomChallenge == oldChallenge) {
-            randomChallenge = stringList[Math.floor(Math.random() * stringList.length)];
+        while (
+            randomChallenge.id == oldChallenge.id ||
+            recentlySelected.includes(randomChallenge.id)
+        ) {
+            randomChallenge = challengeList[Math.floor(Math.random() * challengeList.length)];
+        }
+        recentlySelected.push(randomChallenge.id);
+        if (recentlySelected.length > recentThreshold) {
+            recentlySelected.shift(); // Remove the oldest item from the array if it exceeds the threshold
         }
     }
 
@@ -54,6 +72,8 @@
         }
     }
 </script>
+
+<Leaderboard {challengeList} />
 
 <div class="container">
     <div class="heading">

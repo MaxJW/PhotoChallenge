@@ -2,6 +2,21 @@
     import Challenges from './components/Challenges.svelte';
     import { SvelteToast } from '@zerodevx/svelte-toast';
     import User from './components/User.svelte';
+    import { tutorial } from './stores.js';
+
+    let tutorialViewed = false;
+    tutorial.subscribe((value) => {
+        tutorialViewed = value;
+    });
+    if (!tutorialViewed) {
+        if (
+            confirm(
+                "Thanks for scanning!\n\nIf you fancy some more photo challenges, we have created a bunch for you here, just enter your name, and get snapping!\n\nClick 'New Challenge' if you don't like the one you have, and click 'Complete Challenge' to mark it as complete! There's a leaderboard and everything 😁\n\nClick OK to hide this pop-up.",
+            )
+        ) {
+            tutorial.set(true);
+        }
+    }
 
     //Currently set name
     let nameVal = '';
@@ -15,14 +30,4 @@
 <SvelteToast />
 
 <style>
-    :global(html) {
-        height: 100%;
-        box-sizing: border-box;
-        border: 30px solid;
-        border-image-source: url(/src/assets/border.png);
-        border-image-slice: 181 335 204 212;
-        border-image-width: 182px 336px 201px 209px;
-        border-image-outset: 0px 0px 0px 0px;
-        border-image-repeat: stretch repeat;
-    }
 </style>
