@@ -5,6 +5,6 @@
 	"background_color": "#13131c",
 	"display": "fullscreen",
 	"orientation": "portrait",
-	"scope": "http://camera.maxandisla.love/",
-	"start_url": "http://camera.maxandisla.love/"
+	"scope": "https://camera.maxandisla.love/",
+	"start_url": "https://camera.maxandisla.love/"
 }
